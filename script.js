@@ -1,6 +1,6 @@
 $(document).ready(function() {
-  const apiRoot = 'https://pacific-shore-57837.herokuapp.com/v1/tasks/';
-  const trelloApiRoot = 'http://localhost:8080/v1/trello/';
+  const apiRoot = 'https://pacific-shore-57837.herokuapp.com/v1/tasks';
+  const trelloApiRoot = 'https://pacific-shore-57837.herokuapp.com/v1/trello/';
   const datatableRowTemplate = $('[data-datatable-row-template]').children()[0];
   const $tasksContainer = $('[data-tasks-container]');
 
@@ -108,12 +108,10 @@ $(document).ready(function() {
   function handleTaskDeleteRequest() {
     var parentEl = $(this).parents('[data-task-id]');
     var taskId = parentEl.attr('data-task-id');
-    var requestUrl = apiRoot + {taskId};
+    var requestUrl = apiRoot;
 
-    $.ajax({
-      url: requestUrl + '/?' + $.param({
-        taskId: taskId
-      }),
+     $.ajax({
+      url: requestUrl + '/' + taskId,
       method: 'DELETE',
       success: function() {
         parentEl.slideUp(400, function() { parentEl.remove(); });
