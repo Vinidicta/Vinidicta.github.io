@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  const apiRoot = 'https://pacific-shore-57837.herokuapp.com/v1/tasks';
+  const apiRoot = 'https://pacific-shore-57837.herokuapp.com/v1/';
   const trelloApiRoot = 'https://pacific-shore-57837.herokuapp.com/v1/trello/';
   const datatableRowTemplate = $('[data-datatable-row-template]').children()[0];
   const $tasksContainer = $('[data-tasks-container]');
@@ -63,7 +63,7 @@ $(document).ready(function() {
   }
 
   function getAllTasks() {
-    const requestUrl = apiRoot;
+    const requestUrl = apiRoot + 'tasks';
 
     $.ajax({
       url: requestUrl,
@@ -84,7 +84,7 @@ $(document).ready(function() {
     var taskId = parentEl.attr('data-task-id');
     var taskTitle = parentEl.find('[data-task-name-input]').val();
     var taskContent = parentEl.find('[data-task-content-input]').val();
-    var requestUrl = apiRoot;
+    var requestUrl = apiRoot + 'tasks';
 
     $.ajax({
       url: requestUrl,
@@ -101,6 +101,11 @@ $(document).ready(function() {
         parentEl.attr('data-task-id', data.id).toggleClass('datatable__row--editing');
         parentEl.find('[data-task-name-paragraph]').text(taskTitle);
         parentEl.find('[data-task-content-paragraph]').text(taskContent);
+      },
+      complete: function(data) {
+        if(data.status === 200) {
+          getAllTasks();
+        }
       }
     });
   }
@@ -108,9 +113,9 @@ $(document).ready(function() {
   function handleTaskDeleteRequest() {
     var parentEl = $(this).parents('[data-task-id]');
     var taskId = parentEl.attr('data-task-id');
-    var requestUrl = apiRoot;
+    var requestUrl = apiRoot + 'tasks';
 
-     $.ajax({
+    $.ajax({
       url: requestUrl + '/' + taskId,
       method: 'DELETE',
       success: function() {
@@ -125,7 +130,7 @@ $(document).ready(function() {
     var taskTitle = $(this).find('[name="title"]').val();
     var taskContent = $(this).find('[name="content"]').val();
 
-    var requestUrl = apiRoot;
+    var requestUrl = apiRoot + 'tasks';
 
     $.ajax({
       url: requestUrl,
@@ -188,10 +193,10 @@ $(document).ready(function() {
         description: relatedTask.content,
         listId: selectedListId
       }),
-      success: function(data) {
+    success: function(data) {
         console.log('Card created - ' + data.shortUrl);
         alert('Card created - ' + data.shortUrl);
-      }
+      } 
     });
   }
 
